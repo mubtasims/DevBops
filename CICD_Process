@@ -45,7 +45,7 @@ Commands used when starting up the Ec2 instances
 
 6. Creating the pipeline:
 
-"Pipeline script From SCM"** is chosen- since there is a Jenkinsfile that will define the stages. 
+"Pipeline script From SCM" is chosen- since there is a Jenkinsfile that will define the stages. 
 
 For the SCM field "git" is used
 
