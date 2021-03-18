@@ -1,0 +1,77 @@
+# Setting up a functional CI / CD pipeline 
+
+> 1. A Jenkins sever needs to be running in a public subnet before the following steps. 
+<br>
+
+**Commands used when starting up the Ec2 instances**
+
+* sudo yum install git -y
+* sudo yum install python3 -y
+* sudo amazon-linux-extras install docker -y 
+* sudo yum install docker
+* sudo service docker start
+* sudo sytemctl enable dokcer
+* sudo usermod -aG docker jenkins
+* sudo usermod -aG docker ec2-user
+
+<br>
+
+> 2. A second server is then run in a private subnet.
+
+<br>
+
+**Commands used when starting up the Ec2 instances**
+
+
+* sudo yum install git -y
+* sudo yum install python3 -y
+* sudo amazon-linux-extras install docker -y 
+* sudo yum install docker
+* sudo service docker start
+* sudo sytemctl enable dokcer
+* sudo usermod -aG docker ec2-user
+
+<br>
+
+> 3. Login to the Jenkins server, using **your_public_ip:8080** and install the following plugins (Manage Jenkins -> Manage Plugins -> Avaialable): 
+
+* Docker Commons Plugin
+* Docker Pipeline
+* Docker plugin
+* docker-build-step
+* CloudBees Docker Build and Publish plugin
+* SSH Agent
+
+
+<br>
+
+> 4. As the test script is dependent on the boto3 SDK, enviromental variables needs to be created in order for a smooth execution of the tests. (Jenkins -> Manage Jenkins -> Configure System -> Global properties -> Environment variables)
+
+<br>
+
+> 5. A pipeline will be build which will push docker images to a docker hub repository. Jenkis credentials needs to be given to be able to do this in a secure manner and it should also be allowed to give Jenkins an shh connection to the private Ec2 in order for it stop and start new containers. 
+
+
+
+<br>
+
+> 6. Creating the pipeline:
+
+* **"Pipeline script From SCM"** is chosen- since there is a Jenkinsfile that will define the stages. 
+
+* **For the SCM field "git" is used ** 
+
+
+<br>
+
+> 7. A webhook is created which Jenkins will pull and build the enviroment everytime there is a push to a branch:
+
+* Build trigger section of the pipeline > "GitHub hook trigger for GITScm polling"
+
+* Add the web hook to the Github repo. GitHub > Repo > Setting > Webhook > Add a Webhook > "your_public_ip:8080/github-webhook".
+ 
+
+<br>
+
+
+> The Jenkins file will define the stages that will take place. Run the pipeline.
